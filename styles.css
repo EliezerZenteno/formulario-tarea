@@ -99,3 +99,68 @@ button:hover {
         overflow-x: auto;
     }
 } 
+
+.average-display {
+    font-size: 1.8rem;
+    font-weight: bold; 
+    color: #4CAF50; 
+    background-color: #f0f8f5; 
+    border: 2px solid #4CAF50; 
+    border-radius: 8px; 
+    padding: 15px 25px;
+    text-align: center; 
+    margin: 20px auto; 
+    width: fit-content; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease, background-color 0.3s ease; 
+}
+
+.average-display:hover {
+    transform: scale(1.05); 
+    background-color: #e8f5e9;
+}
+
+.edit-btn {
+    background-color: #2196F3; /* Azul */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #1976D2; /* Azul más oscuro */
+}
+
+.edit-btn {
+    background-color: #2196F3; /* Azul */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #1976D2; /* Azul más oscuro */
+}
+
+.delete-btn {
+    background-color: #f44336; /* Rojo */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f; /* Rojo más oscuro */
+}
