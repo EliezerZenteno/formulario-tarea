@@ -10,7 +10,7 @@ document.getElementById("studentForm").addEventListener("submit", function (e) {
     const date = document.getElementById("date").value;
 
     if (grade < 1 || grade > 7 || !name || !lastName || isNaN(grade) || !date) {
-        alert("Error al ingresar los datos");
+        alert("Por favor, complete todos los campos correctamente. La nota debe estar entre 1 y 7.");
         return;
     }
 
@@ -55,13 +55,30 @@ function borrarEstudiante(student, row) {
 function calculateAverage() {
     if (students.length === 0) {
         promedioDiv.textContent = "Promedio General del curso: N/A";
+        document.getElementById("statistics").innerHTML = `
+            Total de estudiantes: 0<br>
+            Porcentaje de aprobados: 0%<br>
+            Porcentaje de reprobados: 0%
+        `;
         return;
     }
-    const total = students.reduce((acumulador, student) => {
-        return acumulador + (typeof student.grade === "number" ? student.grade : 0);
-    }, 0);
-    const average = total / students.length;
-    promedioDiv.textContent = `Promedio General del curso: ${average.toFixed(2)}`;
+
+    const total = students.reduce((sum, student) => sum + student.grade, 0);
+    const average = (total / students.length).toFixed(2);
+
+    const totalStudents = students.length;
+    const approved = students.filter(student => student.grade >= 4.0).length;
+    const failed = totalStudents - approved;
+
+    const approvedPercentage = ((approved / totalStudents) * 100).toFixed(2);
+    const failedPercentage = ((failed / totalStudents) * 100).toFixed(2);
+
+    promedioDiv.textContent = `Promedio General del curso: ${average}`;
+    document.getElementById("statistics").innerHTML = `
+        Total de estudiantes: ${totalStudents}<br>
+        Porcentaje de aprobados: ${approvedPercentage}%<br>
+        Porcentaje de reprobados: ${failedPercentage}%
+    `;
 }
 
 function addStudentToTable(student) {
@@ -77,12 +94,10 @@ function addStudentToTable(student) {
     </td>
     `;
 
-    // Botón de eliminar
     row.querySelector(".delete-btn").addEventListener("click", function () {
         borrarEstudiante(student, row);
     });
 
-    // Botón de editar
     row.querySelector(".edit-btn").addEventListener("click", function () {
         editarEstudiante(student, row);
     });
@@ -91,12 +106,39 @@ function addStudentToTable(student) {
 }
 
 function editarEstudiante(student, row) {
-    // Llenar el formulario con los datos del estudiante
     document.getElementById("name").value = student.name;
     document.getElementById("lastName").value = student.lastName;
     document.getElementById("grade").value = student.grade;
     document.getElementById("date").value = student.date;
 
-    // Eliminar el estudiante actual de la tabla y del array
     borrarEstudiante(student, row);
 }
+
+const formFields = document.querySelectorAll("#studentForm input");
+
+formFields.forEach(field => {
+    field.addEventListener("invalid", function (e) {
+        e.preventDefault();
+
+        if (!field.value.trim()) {
+            field.setCustomValidity("Este campo es obligatorio.");
+        } else if (field.id === "grade") {
+            const gradeValue = parseFloat(field.value);
+            if (isNaN(gradeValue) || gradeValue < 1 || gradeValue > 7) {
+                field.setCustomValidity("La nota debe estar entre 1 y 7.");
+            } else {
+                field.setCustomValidity(""); // Restablecer si es válido
+            }
+        } else {
+            field.setCustomValidity(""); // Restablecer si es válido
+        }
+
+        // Mostrar el mensaje personalizado
+        field.reportValidity();
+    });
+
+    field.addEventListener("input", function () {
+        field.setCustomValidity("");
+    });
+});
+
